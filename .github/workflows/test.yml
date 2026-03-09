@@ -40,6 +40,6 @@ jobs:
             sleep 2
           done
       - run: docker build -t e2e-test ./e2e
-      - run: docker run --rm --network cicd-demo_default -e BASE_URL=http://client:80 e2e-test
+      - run: docker run --rm --network ci-cd-demo_default -e BASE_URL=http://client:80 e2e-test
       - run: docker compose down
         if: always()

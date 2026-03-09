@@ -12,7 +12,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Running Tests
 
-All tests run inside Docker — the only prerequisite is Docker itself.
+All tests run inside Docker. The only prerequisite is Docker itself.
 
 ```bash
 # Backend unit tests
@@ -22,27 +22,27 @@ docker compose run --rm server npm test
 docker build --target build -t client-test ./client
 docker run --rm client-test npm test
 
-# Integration tests (starts MySQL automatically)
+# Integration tests
 docker compose run --rm server npm run test:integration
 
-# E2E tests (start the app first)
+# E2E tests
 docker compose up -d --build
 docker build -t e2e-test ./e2e
-docker run --rm --network cicd-demo_default -e BASE_URL=http://client:80 e2e-test
+docker run --rm --network ci-cd-demo_default -e BASE_URL=http://client:80 e2e-test
 docker compose down
 ```
 
 ## CI/CD Pipelines
 
-**Tests** (`.github/workflows/test.yml`) — runs on every push/PR to `main`:
+**Tests** `.github/workflows/test.yml` runs on every push/PR to `main`:
 1. Backend unit tests
 2. Frontend unit tests
-3. Integration tests (API → MySQL)
-4. E2E tests (Playwright)
+3. Integration tests
+4. E2E tests
 
 Each step depends on the previous — if unit tests fail, integration and E2E are skipped.
 
-**Deploy** (`.github/workflows/deploy.yml`) — runs automatically after Tests pass on `main`. Connects to the deployment server via Tailscale and deploys with Docker Compose.
+**Deploy** `.github/workflows/deploy.yml` runs automatically after Tests pass on `main`. Connects to the deployment server via Tailscale and deploys with Docker Compose.
 
 ---
 
@@ -97,7 +97,7 @@ Go to your repo → Settings → Secrets and variables → Actions, and add:
 | `DEPLOY_HOST` | Tailscale IP or hostname of your server |
 | `DEPLOY_USER` | SSH username on the server |
 | `SSH_PRIVATE_KEY` | Contents of `~/.ssh/ci_deploy` (the **private** key) |
-| `DEPLOY_PATH` | Absolute path to the repo on the server (e.g. `/home/user/cicd-demo`) |
+| `DEPLOY_PATH` | Absolute path to the repo on the server (e.g. `/home/user/ci-cd-demo`) |
 
 ### 5. Test It
 
